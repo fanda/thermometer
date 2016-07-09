@@ -1,0 +1,44 @@
+%script{type: "text/ractive", id: "LocaleT"}
+  %input.form-control{name: "l_{{lang}}_{{k}}", type: "text", value: "{{l_value}}", readonly: "{{readonly=='yes'}}"}
+
+
+%script{type: "text/ractive", id: "TranslationsT"}
+  %form{id: "form-Translations"}
+    .row
+      .col-sm-6
+        %h2 Výchozí jazyk
+        .row.form-group
+          .col-sm-12
+            %select.form-control{value: "{{lang1}}"}
+              :plain
+                {{#languages:lang}}
+                  <option value="{{lang}}">{{.}}</option>
+                {{/languages}}
+
+        = "{{#l_keys}}"
+        .row.form-group
+          .col-sm-12
+            %locale{lang: "{{lang1}}", l_key: "{{.}}", readonly: "yes"}
+        = "{{/l_keys}}"
+
+
+      .col-sm-6
+        %h2 Překlad
+        .row.form-group
+          .col-sm-12
+            %select.form-control{value: "{{lang2}}"}
+              :plain
+                {{#languages:lang}}
+                  <option value="{{lang}}">{{.}}</option>
+                {{/languages}}
+
+        = "{{#l_keys}}"
+        .row.form-group
+          .col-sm-12
+            %locale{lang: "{{lang2}}", l_key: "{{.}}"}
+        = "{{/l_keys}}"
+
+    .form-group.row
+      .col-sm-offset-8.col-sm-4
+        %button.btn.btn-primary(on-click="action")
+          Uložit!

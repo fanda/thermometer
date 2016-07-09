@@ -1,0 +1,36 @@
+%script{type: "text/ractive", id: "ThermoT"}
+  #head.row
+    #head_icon.col-lg-1
+      %img{src: "/img/tmw.png", alt: "Thermometer"}
+    #head_title.col-lg-2
+      Thermometer
+    .col-lg-5
+    #head_version.col-lg-1
+      Verze:
+      %br
+      0.1
+    #head_update.col-lg-2
+      Aktuální
+    #head_language.col-lg-1
+      cz
+
+  #info
+    :plain
+      {{#errors:t}}
+        <div id="{{t}}" class="row {{t}}">
+          {{errors[t]}}
+        </div>
+      {{/errors}}
+
+  #menu.row
+    %ul
+      = "{{#menu:i}}"
+      %li{:class => "{{#if active_page==href}}active{{/if}}"}
+        %a{:href => "{{href}}", "on-click" => "go:{{href}}"}
+          = "{{title}}"
+      = "{{/menu}}"
+
+
+  #app.row
+    .col-md-12
+      %dynamic(name='{{active_page}}')

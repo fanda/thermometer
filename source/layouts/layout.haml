@@ -1,0 +1,16 @@
+!!! html
+%html
+  %head
+    %meta{:charset=>"utf-8"}
+    %meta{:content=>"IE=edge,chrome=1", 'http-equiv'=>"X-UA-Compatible"}
+    %title= current_resource.data.title
+
+    = stylesheet_link_tag "/css/bootstrap.css?1", "/css/app.css?1"
+    = yield_content(:stylesheets)
+
+    %script{:src=>'http://cdn.ractivejs.org/latest/ractive.js'}
+    -#%script{:src=>'http://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js'}
+  %body.wrapper{:class => "#{page_classes}"}
+    = partial '/layouts/templates'
+    = yield
+    = yield_content(:javascripts)

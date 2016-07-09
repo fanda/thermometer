@@ -1,0 +1,230 @@
+%script{type: "text/ractive", id: "SettingsT"}
+  .row
+    .col-sm-3
+      %ul.nav.nav-pills.nav-stacked
+        = "{{#settings_menu:href}}"
+        %li.nav-item
+          %a.nav-link{href: "{{href}}", "on-click" => "subgo:{{href}}", :class => "{{#active}}active{{/active}}"}
+            = "{{title}}"
+        = "{{/settings_menu}}"
+    .col-sm-9
+      %dynamic(name='{{settings_form}}')
+
+%script{type: "text/ractive", id: "MainOptionsT"}
+  %form{id: "form-MainOptions"}
+    .form-group.row
+      %label.col-sm-4.form-control-label
+        Regulátor
+      .col-sm-8
+        %label.radio-inline(for="reg_yes")
+          %input#reg_yes(type="radio" name="{{reg}}" value="yes")
+          Zapnuto
+        %label.radio-inline(for="reg_no")
+          %input#reg_no(type="radio" name="{{reg}}" value="no")
+          Vypnuto
+
+
+    %fieldset{disabled: "{{reg=='no'}}"}
+      .row.form-group
+        %label.col-sm-4.form-control-label
+          Rozsah regulátoru
+        .col-sm-8
+          .row.horizontal
+            %label.col-sm-1(for="reg_range_min")
+              min.
+            .col-sm-5
+              %input#reg_range_min.form-control{name: "reg_range_min", type: "text", value: "{{reg_range_min}}"}
+            %label.col-sm-1(for="reg_range_max")
+              max.
+            .col-sm-5
+              %input#reg_range_max.form-control{name: "reg_range_max", type: "text", value: "{{reg_range_max}}"}
+
+      .row.form-group
+        %label.col-sm-4.form-control-label(for="target_degree")
+          Teplota
+        .col-sm-8
+          %input#target_degree.form-control{name: "target_degree", type: "number", value: "{{target_degree}}"}
+
+
+      .form-group.row
+        %label.col-sm-4.form-control-label(for="hyst")
+          Hystereze
+        .col-sm-8
+          %input#hyst.form-control{name: "hyst", type: "number", value: "{{hyst}}"}
+
+      .form-group.row
+        %label.col-sm-4.form-control-label(for="min_time")
+          Min. doba zapnutého relátka
+        .col-sm-8
+          %input#min_time.form-control{name: "min_time", type: "text", value: "{{min_time}}"}
+
+    %fieldset.form-group.row
+      %label.col-sm-4(for="backup")
+        Záloha
+      .col-sm-8
+        %input#backup.form-control{name: "backup", type: "file", value: "{{backup}}"}
+        %a{href: "backup.bin"} backup.bin
+
+    .form-group.row
+      .col-sm-offset-4.col-sm-8
+        %button.btn.btn-primary(on-click="action")
+          Uložit!
+
+%script{type: "text/ractive", id: "DeviceOptionsT"}
+
+
+%script{type: "text/ractive", id: "MainOptionsT"}
+
+%script{type: "text/ractive", id: "SmsOptionsT"}
+
+
+%script{type: "text/ractive", id: "NetworkOptionsT"}
+  %form{id: "form-NetworkOptions"}
+    .form-group.row
+      .col-sm-offset-4.col-sm-8
+        %label.radio-inline(for="dhcp_no")
+          %input#dhcp_no(type="radio" name="{{dhcp}}" value="no")
+          = "Static"
+        %label.radio-inline(for="dhcp_yes")
+          %input#dhcp_yes(type="radio" name="{{dhcp}}" value="yes")
+          DHCP
+
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="net_port")
+        Síťový port zařízení
+      .col-sm-8
+        %input#net_port.form-control{name: "net_port", type: "text", value: "{{net_port}}", disabled: "{{dhcp=='yes'}}"}
+
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="net_ip")
+        IP adresa zařízení
+      .col-sm-8
+        %input#net_ip.form-control{name: "net_ip", type: "text", value: "{{net_ip}}", disabled: "{{dhcp=='yes'}}"}
+
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="net_mask")
+        Maska sítě
+      .col-sm-8
+        %input#net_mask.form-control{name: "net_mask", type: "text", value: "{{net_mask}}", disabled: "{{dhcp=='yes'}}"}
+
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="net_gateway")
+        Síťová brána
+      .col-sm-8
+        %input#net_gateway.form-control{name: "net_gateway", type: "text", value: "{{net_gateway}}", disabled: "{{dhcp=='yes'}}"}
+
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="net_dns")
+        DNS server
+      .col-sm-8
+        %input#net_dns.form-control{name: "net_dns", type: "text", value: "{{net_dns}}", disabled: "{{dhcp=='yes'}}"}
+
+    .form-group.row
+      .col-sm-offset-4.col-sm-8
+        %button.btn.btn-primary(on-click="action")
+          Uložit!
+
+%script{type: "text/ractive", id: "EmailOptionsT"}
+  %form{id: "form-EmailOptions"}
+    :plain
+      {{#sensors:i}}
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="email_{{i}}")
+        Email pro
+        = "{{name}}"
+      .col-sm-8
+        %input.form-control{name: "email", type: "email", value: "{{email}}", id: "email_{{i}}"}
+    :plain
+      {{/sensors}}
+
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="repeat_alarm")
+        Opakování, když alarm trvá
+      .col-sm-8
+        %label.radio-inline(for="repeat_alarm_yes")
+          %input#repeat_alarm_yes(type="radio" name="{{repeat_alarm}}" value="yes")
+          Ano
+        %label.radio-inline(for="repeat_alarm_no")
+          %input#repeat_alarm_no(type="radio" name="{{repeat_alarm}}" value="no")
+          Ne
+
+
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="repeat_delay")
+        Za jakou dobu opakovat (s)
+      .col-sm-8
+        %input#repeat_delay.form-control{name: "repeat_delay", type: "number", value: "{{repeat_delay}}", disabled: "{{repeat_alarm=='no'}}"}
+    .form-group.row
+      %label.col-sm-4.form-control-label(for="repeat_times")
+        Kolikrát opakovat
+      .col-sm-8
+        %input#repeat_times.form-control{name: "repeat_times", type: "number", value: "{{repeat_times}}", disabled: "{{repeat_alarm=='no'}}"}
+
+    .form-group.row
+      .col-sm-offset-4.col-sm-8
+        %button.btn.btn-primary(on-click="action")
+          Uložit!
+
+%script{type: "text/ractive", id: "SensorListT"}
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Nr.
+        %th hex
+        %th SYSname
+        %th Název
+        %th Čidlo řídí relátko
+        %th Stav
+        %th Email min.
+        %th Email max.
+        %th
+          Email
+          %abbr(title="zpožední") zp.
+        %th Email hystereze
+        %th Email při návratu
+
+
+    %tbody
+      :plain
+        {{#sensors}}
+      %tr
+        %td
+          :plain
+            {{nr}}
+        %td
+          :plain
+            {{hex}}
+        %td
+          %input{type: "text", name: "sysname", value: "{{sysname}}"}
+        %td
+          %input{type: "text", name: "name", value: "{{name}}"}
+        %td
+          :plain
+            {{control}}
+        %td
+          :plain
+            {{#if status}}
+              <b style="color:green;font-size:32px">&bull;</b>
+            {{else}}
+              <b style="color:red;font-size:32px">&bull;</b>
+            {{/if}
+        %td
+          :plain
+            {{email_min}}
+        %td
+          :plain
+            {{email_max}}
+        %td
+          :plain
+            {{email_delay}}
+        %td
+          :plain
+            {{email_hyst}}
+        %td
+          %input{type: "text", name: "email_back", value: "{{email_back}}"}
+
+      :plain
+        {{/sensors}}
+
+
